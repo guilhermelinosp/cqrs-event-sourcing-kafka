@@ -1,4 +1,4 @@
-# <div align="center"> CQRS Event Sourcing with Kafka </div>
+# <div align="center"> CQRS + Event Sourcing with Kafka </div>
 
 </br>
 
