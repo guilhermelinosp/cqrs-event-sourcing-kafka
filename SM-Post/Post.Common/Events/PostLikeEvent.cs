@@ -7,7 +7,5 @@ namespace Post.Common.Events
         public PostLikeEvent() : base(nameof(PostLikeEvent))
         {
         }
-
-
     }
 }
