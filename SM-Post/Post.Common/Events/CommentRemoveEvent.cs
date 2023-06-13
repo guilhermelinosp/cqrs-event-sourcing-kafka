@@ -2,9 +2,9 @@
 
 namespace Post.Common.Events
 {
-    public class CommentDeleteEvent : BaseEvent
+    public class CommentRemoveEvent : BaseEvent
     {
-        public CommentDeleteEvent() : base(nameof(CommentDeleteEvent))
+        public CommentRemoveEvent() : base(nameof(CommentRemoveEvent))
         {
         }
 
