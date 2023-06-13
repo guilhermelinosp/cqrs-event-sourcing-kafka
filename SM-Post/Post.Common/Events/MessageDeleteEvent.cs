@@ -2,9 +2,9 @@
 
 namespace Post.Common.Events
 {
-    public class MessageUpdateEvent : BaseEvent
+    public class MessageDeleteEvent : BaseEvent
     {
-        public MessageUpdateEvent() : base(nameof(MessageUpdateEvent))
+        public MessageDeleteEvent() : base(nameof(MessageDeleteEvent))
         {
         }
 

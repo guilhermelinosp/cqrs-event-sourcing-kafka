@@ -14,7 +14,7 @@ namespace Post.Cmd.Infrastructure.Dispatchers
                 throw new IndexOutOfRangeException($"You cannot register the same command handler twice!");
             }
 
-            _handlers.Add(typeof(T), x => handler((T)x));
+            _handlers.Add(typeof(T), command => handler((T)command));
         }
 
         public async Task SendAsync(BaseCommand command)

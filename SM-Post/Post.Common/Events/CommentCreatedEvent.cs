@@ -2,9 +2,9 @@
 
 namespace Post.Common.Events
 {
-    public class CommentAddedEvent : BaseEvent
+    public class CommentCreatedEvent : BaseEvent
     {
-        public CommentAddedEvent() : base(nameof(CommentAddedEvent))
+        public CommentCreatedEvent() : base(nameof(CommentCreatedEvent))
         {
         }
 
