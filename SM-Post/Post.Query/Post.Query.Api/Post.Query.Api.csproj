@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.5" />
+    <PackageReference Include="Microsoft.DependencyValidation.Analyzers" Version="0.11.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
@@ -16,6 +17,14 @@
   	  <ProjectReference Include="..\..\Post.Common\Post.Common.csproj" />
   	  <ProjectReference Include="..\Post.Query.Domain\Post.Query.Domain.csproj" />
   	  <ProjectReference Include="..\Post.Query.Infrastruct\Post.Query.Infrastruct.csproj" />
+  	</ItemGroup>
+
+  	<ItemGroup>
+  	  <EditorConfigFiles Remove="C:\Users\GuilhermeSantosBR-iT\Desktop\cqrs-event-sourcing-with-kafka\SM-Post\Post.Query\Post.Query.Api\.editorconfig" />
+  	</ItemGroup>
+
+  	<ItemGroup>
+  	  <None Include="C:\Users\GuilhermeSantosBR-iT\Desktop\cqrs-event-sourcing-with-kafka\SM-Post\Post.Query\Post.Query.Api\.editorconfig" />
   	</ItemGroup>
 
 

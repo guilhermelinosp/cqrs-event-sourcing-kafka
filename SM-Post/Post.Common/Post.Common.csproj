@@ -1,14 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Remove="NewFolder\**" />
+		<EmbeddedResource Remove="NewFolder\**" />
+		<None Remove="NewFolder\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.DependencyValidation.Analyzers" Version="0.11.0" />
+	</ItemGroup>
 
 
-  	<ItemGroup>
-  	  <ProjectReference Include="..\..\CQRS-ES\CQRS.Core\CQRS.Core.csproj" />
-  	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\CQRS-ES\CQRS.Core\CQRS.Core.csproj" />
+	</ItemGroup>
 
 </Project>
