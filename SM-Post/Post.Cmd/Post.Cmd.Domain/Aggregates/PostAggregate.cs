@@ -8,7 +8,8 @@ namespace Post.Cmd.Domain.Aggregates
         private bool _active;
         private string _author;
         private readonly Dictionary<Guid, Tuple<string, string>> _comments = new();
-        public bool Active => _active;
+
+        public bool Active { get => _active; set => _active = value; }
 
         public PostAggregate()
         {
@@ -21,42 +22,42 @@ namespace Post.Cmd.Domain.Aggregates
                 Id = id,
                 Author = author,
                 Message = message,
-                PostCreatedDate = DateTime.Now
+                DatePosted = DateTime.Now
             });
         }
 
         public void Apply(PostCreatedEvent @event)
         {
             _id = @event.Id;
-            _author = @event.Author;
             _active = true;
+            _author = @event.Author;
         }
 
-        public void MessageUpdate(string message)
+        public void EditMessage(string message)
         {
             if (!_active)
             {
-                throw new InvalidOperationException("You cannot edit an inactive post!");
+                throw new InvalidOperationException("You cannot edit the message of an inactive post!");
             }
 
             if (string.IsNullOrWhiteSpace(message))
             {
-                throw new InvalidOperationException($"The value of {message} cannot be null or empty. Please provide a valid!");
+                throw new InvalidOperationException($"The value of {nameof(message)} cannot be null or empty. Please provide a valid {nameof(message)}!");
             }
 
-            RaiseEvent(new MessageUpdateEvent
+            RaiseEvent(new MessageUpdatedEvent
             {
                 Id = _id,
                 Message = message
             });
         }
 
-        public void Apply(MessageUpdateEvent @event)
+        public void Apply(MessageUpdatedEvent @event)
         {
             _id = @event.Id;
         }
 
-        public void PostLiked()
+        public void LikePost()
         {
             if (!_active)
             {
@@ -65,7 +66,7 @@ namespace Post.Cmd.Domain.Aggregates
 
             RaiseEvent(new PostLikedEvent
             {
-                Id = _id,
+                Id = _id
             });
         }
 
@@ -74,7 +75,7 @@ namespace Post.Cmd.Domain.Aggregates
             _id = @event.Id;
         }
 
-        public void CommentCreated(string comment, string username)
+        public void AddComment(string comment, string username)
         {
             if (!_active)
             {
@@ -83,102 +84,94 @@ namespace Post.Cmd.Domain.Aggregates
 
             if (string.IsNullOrWhiteSpace(comment))
             {
-                throw new InvalidOperationException($"The value of {comment} cannot be null or empty. Please provide a valid!");
-            }
-
-            if (string.IsNullOrWhiteSpace(username))
-            {
-                throw new InvalidOperationException($"The value of {username} cannot be null or empty. Please provide a valid!");
+                throw new InvalidOperationException($"The value of {nameof(comment)} cannot be null or empty. Please provide a valid {nameof(comment)}!");
             }
 
             RaiseEvent(new CommentCreatedEvent
             {
                 Id = _id,
+                CommentId = Guid.NewGuid(),
                 Comment = comment,
-                CommnetId = Guid.NewGuid(),
                 Username = username,
-                CommentAddedDate = DateTime.Now
+                CommentDate = DateTime.Now
             });
         }
 
         public void Apply(CommentCreatedEvent @event)
         {
             _id = @event.Id;
-            _comments.Add(@event.CommnetId, new Tuple<string, string>(@event.Comment, @event.Username));
+            _comments.Add(@event.CommentId, new Tuple<string, string>(@event.Comment, @event.Username));
         }
 
-        public void CommentUpdated(Guid commentId, string comment, string username)
+        public void EditComment(Guid commentId, string comment, string username)
         {
             if (!_active)
             {
-                throw new InvalidOperationException("You cannot update a comment on an inactive post!");
+                throw new InvalidOperationException("You cannot edit a comment of an inactive post!");
             }
 
             if (!_comments[commentId].Item2.Equals(username, StringComparison.CurrentCultureIgnoreCase))
             {
-                throw new InvalidOperationException("You are not allowed to edit a comment that was made by another user");
+                throw new InvalidOperationException("You are not allowed to edit a comment that was made by another user!");
             }
 
             RaiseEvent(new CommentUpdatedEvent
             {
                 Id = _id,
+                CommentId = commentId,
                 Comment = comment,
-                CommnetId = commentId,
                 Username = username,
-                CommentUpdatedDate = DateTime.Now
+                EditDate = DateTime.Now
             });
         }
 
         public void Apply(CommentUpdatedEvent @event)
         {
             _id = @event.Id;
-            _comments[@event.CommnetId] = new Tuple<string, string>(@event.Comment, @event.Username);
+            _comments[@event.CommentId] = new Tuple<string, string>(@event.Comment, @event.Username);
         }
 
-        public void CommentDelete(Guid commentId, string username)
+        public void RemoveComment(Guid commentId, string username)
         {
             if (!_active)
             {
-                throw new InvalidOperationException("You cannot delete a comment on an inactive post!");
+                throw new InvalidOperationException("You cannot remove a comment of an inactive post!");
             }
 
             if (!_comments[commentId].Item2.Equals(username, StringComparison.CurrentCultureIgnoreCase))
             {
-                throw new InvalidOperationException("You are not allowed to delete a comment that was made by another user");
+                throw new InvalidOperationException("You are not allowed to remove a comment that was made by another user!");
             }
 
-            RaiseEvent(new CommentDeleteEvent
+            RaiseEvent(new CommentRemovedEvent()
             {
                 Id = _id,
-                CommnetId = commentId,
+                CommentId = commentId
             });
         }
 
-        public void Apply(CommentDeleteEvent @event)
+        public void Apply(CommentRemovedEvent @event)
         {
             _id = @event.Id;
-            _comments.Remove(@event.CommnetId);
+            _comments.Remove(@event.CommentId);
         }
 
-        public void PostDelete(string username)
+        public void DeletePost(string username)
         {
             if (!_active)
             {
-                throw new InvalidOperationException("You cannot delete an inactive post!");
+                throw new InvalidOperationException("The post has already been removed!");
             }
 
             if (!_author.Equals(username, StringComparison.CurrentCultureIgnoreCase))
             {
-                throw new InvalidOperationException("You are not allowed to delete a post that was made by another user");
+                throw new InvalidOperationException("You are not allowed to delete a post that was made by somebody else!");
             }
 
-            RaiseEvent(new PostDeleteEvent
-            {
-                Id = _id,
-            });
+            RaiseEvent(new PostRemovedEvent { Id = _id });
         }
 
-        public void Apply(PostDeleteEvent @event)
+        public void Apply(PostRemovedEvent @event)
         {
             _id = @event.Id;
             _active = false;

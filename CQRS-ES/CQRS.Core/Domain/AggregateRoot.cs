@@ -5,41 +5,49 @@ namespace CQRS.Core.Domain
     public abstract class AggregateRoot
     {
         protected Guid _id;
-        private readonly List<BaseEvent> _events = new();
+        private readonly List<BaseEvent> _changes = new();
 
         public Guid Id => _id;
+
         public int Version { get; set; } = -1;
-        public IEnumerable<BaseEvent> GetUncomittedEvents => _events;
-        public void MarkEventsAsCommitted() => _events.Clear();
 
-        private void ApplyEvent(BaseEvent @event, bool isNew)
+        public IEnumerable<BaseEvent> GetUncommittedChanges()
         {
-            var method = GetType().GetMethod("Apply", new Type[] { @event.GetType() });
-            if (method != null)
-            {
-                method.Invoke(this, new object?[] { @event });
+            return _changes;
+        }
 
-                if (isNew)
-                {
-                    _events.Add(@event);
-                }
-            }
-            else
+        public void MarkChangesAsCommitted()
+        {
+            _changes.Clear();
+        }
+
+        private void ApplyChange(BaseEvent @event, bool isNew)
+        {
+            var method = this.GetType().GetMethod("Apply", new Type[] { @event.GetType() });
+
+            if (method == null)
             {
-                throw new ArgumentNullException($"No Apply method found for event {@event.GetType().Name}");
+                throw new ArgumentNullException(nameof(method), $"The Apply method was not found in the aggregate for {@event.GetType().Name}!");
+            }
+
+            method.Invoke(this, new object[] { @event });
+
+            if (isNew)
+            {
+                _changes.Add(@event);
             }
         }
 
         protected void RaiseEvent(BaseEvent @event)
         {
-            ApplyEvent(@event, true);
+            ApplyChange(@event, true);
         }
 
-        public void ReplayEvent(IEnumerable<BaseEvent> events)
+        public void ReplayEvents(IEnumerable<BaseEvent> events)
         {
             foreach (var @event in events)
             {
-                ApplyEvent(@event, false);
+                ApplyChange(@event, false);
             }
         }
     }

@@ -8,8 +8,8 @@ namespace Post.Common.Events
         {
         }
 
-        public string? Author { get; set; }
-        public string? Message { get; set; }
-        public DateTime PostCreatedDate { get; set; }
+        public string Author { get; set; }
+        public string Message { get; set; }
+        public DateTime DatePosted { get; set; }
     }
 }
