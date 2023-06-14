@@ -18,4 +18,4 @@
 		<ProjectReference Include="..\Post.Cmd.Domain\Post.Cmd.Domain.csproj" />
 	</ItemGroup>
 
-</Project>
+		</Project>
