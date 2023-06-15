@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Post.Query.Api", "Post.Quer
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Post.Query.Domain", "Post.Query\Post.Query.Domain\Post.Query.Domain.csproj", "{F2843317-A335-45B9-8C58-74AC080FF56D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Post.Query.Infrastruct", "Post.Query\Post.Query.Infrastruct\Post.Query.Infrastruct.csproj", "{7AE666EB-EC41-46AF-9482-D3F47F00B6A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Post.Query.Infrastructure", "Post.Query\Post.Query.Infrastruct\Post.Query.Infrastructure.csproj", "{7AE666EB-EC41-46AF-9482-D3F47F00B6A3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Post.Common", "Post.Common\Post.Common.csproj", "{58D8541E-495E-416B-885D-50D17BAA9234}"
 EndProject

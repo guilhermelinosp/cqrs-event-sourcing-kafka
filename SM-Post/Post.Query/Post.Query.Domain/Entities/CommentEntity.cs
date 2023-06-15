@@ -15,6 +15,6 @@ namespace Post.Query.Domain.Entities
         public Guid PostId { get; set; }
 
         [System.Text.Json.Serialization.JsonIgnore]
-        public PostEntity? Post { get; set; }
+        public virtual PostEntity? Post { get; set; }
     }
 }
