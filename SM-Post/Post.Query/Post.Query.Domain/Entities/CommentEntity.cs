@@ -11,7 +11,7 @@ namespace Post.Query.Domain.Entities
         public string? Username { get; set; }
         public string? Comment { get; set; }
         public DateTime CommentDate { get; set; }
-        public DateTime? Edited { get; set; }
+        public bool? Edited { get; set; }
         public Guid PostId { get; set; }
 
         [System.Text.Json.Serialization.JsonIgnore]
