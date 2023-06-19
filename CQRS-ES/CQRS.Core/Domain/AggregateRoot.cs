@@ -1,4 +1,4 @@
-﻿using CQRS.Core.Events;
+using CQRS.Core.Events;
 
 namespace CQRS.Core.Domain
 {
@@ -7,7 +7,10 @@ namespace CQRS.Core.Domain
         protected Guid _id;
         private readonly List<BaseEvent> _changes = new();
 
-        public Guid Id => _id;
+        public Guid Id
+        {
+            get { return _id; }
+        }
 
         public int Version { get; set; } = -1;
 

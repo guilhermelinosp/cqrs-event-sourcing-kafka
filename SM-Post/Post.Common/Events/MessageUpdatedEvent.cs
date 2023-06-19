@@ -1,4 +1,4 @@
-﻿using CQRS.Core.Events;
+using CQRS.Core.Events;
 
 namespace Post.Common.Events
 {
@@ -8,6 +8,6 @@ namespace Post.Common.Events
         {
         }
 
-        public string? Message { get; set; }
+        public string Message { get; set; }
     }
 }

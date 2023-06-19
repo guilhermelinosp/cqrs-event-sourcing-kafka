@@ -1,4 +1,4 @@
-﻿using CQRS.Core.Commands;
+using CQRS.Core.Commands;
 
 namespace CQRS.Core.Infrastructure
 {

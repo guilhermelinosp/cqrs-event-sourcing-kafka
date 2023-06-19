@@ -1,4 +1,4 @@
-﻿using CQRS.Core.Domain;
+using CQRS.Core.Domain;
 using Post.Common.Events;
 
 namespace Post.Cmd.Domain.Aggregates
@@ -87,7 +87,7 @@ namespace Post.Cmd.Domain.Aggregates
                 throw new InvalidOperationException($"The value of {nameof(comment)} cannot be null or empty. Please provide a valid {nameof(comment)}!");
             }
 
-            RaiseEvent(new CommentCreatedEvent
+            RaiseEvent(new CommentAddedEvent
             {
                 Id = _id,
                 CommentId = Guid.NewGuid(),
@@ -97,7 +97,7 @@ namespace Post.Cmd.Domain.Aggregates
             });
         }
 
-        public void Apply(CommentCreatedEvent @event)
+        public void Apply(CommentAddedEvent @event)
         {
             _id = @event.Id;
             _comments.Add(@event.CommentId, new Tuple<string, string>(@event.Comment, @event.Username));
@@ -143,7 +143,7 @@ namespace Post.Cmd.Domain.Aggregates
                 throw new InvalidOperationException("You are not allowed to remove a comment that was made by another user!");
             }
 
-            RaiseEvent(new CommentRemovedEvent()
+            RaiseEvent(new CommentRemovedEvent
             {
                 Id = _id,
                 CommentId = commentId

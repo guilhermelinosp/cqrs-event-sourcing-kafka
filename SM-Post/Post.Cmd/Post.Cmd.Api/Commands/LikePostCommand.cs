@@ -1,8 +1,9 @@
-﻿using CQRS.Core.Commands;
+using CQRS.Core.Commands;
 
 namespace Post.Cmd.Api.Commands
 {
     public class LikePostCommand : BaseCommand
     {
+
     }
 }

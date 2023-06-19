@@ -1,28 +1,15 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net7.0</TargetFramework>
+		<TargetFramework>net6.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+
 	</PropertyGroup>
-
-	<ItemGroup>
-		<Compile Remove="FakesAssemblies\**" />
-		<EmbeddedResource Remove="FakesAssemblies\**" />
-		<None Remove="FakesAssemblies\**" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<PackageReference Include="Microsoft.DependencyValidation.Analyzers" Version="0.11.0" />
-		<PackageReference Include="Microsoft.QualityTools.Testing.Fakes" Version="16.11.230815" />
-	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\CQRS-ES\CQRS.Core\CQRS.Core.csproj" />
 		<ProjectReference Include="..\..\Post.Common\Post.Common.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<AdditionalDesignTimeBuildInput Remove="FakesAssemblies\**" />
 	</ItemGroup>
 
 </Project>
