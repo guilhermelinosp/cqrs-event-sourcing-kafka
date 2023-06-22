@@ -12,7 +12,7 @@ namespace Post.Query.Infrastructure.Converters
             return type.IsAssignableFrom(typeof(BaseEvent));
         }
 
-        public override BaseEvent Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override BaseEvent? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions? options)
         {
             if (!JsonDocument.TryParseValue(ref reader, out var doc))
             {

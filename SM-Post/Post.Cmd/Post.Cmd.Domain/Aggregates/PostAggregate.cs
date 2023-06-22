@@ -6,10 +6,8 @@ namespace Post.Cmd.Domain.Aggregates
     public class PostAggregate : AggregateRoot
     {
         private bool _active;
-        private string _author;
+        private string? _author;
         private readonly Dictionary<Guid, Tuple<string, string>> _comments = new();
-
-        public bool Active { get => _active; set => _active = value; }
 
         public PostAggregate()
         {
@@ -28,7 +26,7 @@ namespace Post.Cmd.Domain.Aggregates
 
         public void Apply(PostCreatedEvent @event)
         {
-            _id = @event.Id;
+            Guid = @event.Id;
             _active = true;
             _author = @event.Author;
         }
@@ -47,14 +45,14 @@ namespace Post.Cmd.Domain.Aggregates
 
             RaiseEvent(new MessageUpdatedEvent
             {
-                Id = _id,
+                Id = Guid,
                 Message = message
             });
         }
 
         public void Apply(MessageUpdatedEvent @event)
         {
-            _id = @event.Id;
+            Guid = @event.Id;
         }
 
         public void LikePost()
@@ -66,13 +64,13 @@ namespace Post.Cmd.Domain.Aggregates
 
             RaiseEvent(new PostLikedEvent
             {
-                Id = _id
+                Id = Guid
             });
         }
 
         public void Apply(PostLikedEvent @event)
         {
-            _id = @event.Id;
+            Guid = @event.Id;
         }
 
         public void AddComment(string comment, string username)
@@ -89,7 +87,7 @@ namespace Post.Cmd.Domain.Aggregates
 
             RaiseEvent(new CommentAddedEvent
             {
-                Id = _id,
+                Id = Guid,
                 CommentId = Guid.NewGuid(),
                 Comment = comment,
                 Username = username,
@@ -99,8 +97,8 @@ namespace Post.Cmd.Domain.Aggregates
 
         public void Apply(CommentAddedEvent @event)
         {
-            _id = @event.Id;
-            _comments.Add(@event.CommentId, new Tuple<string, string>(@event.Comment, @event.Username));
+            Guid = @event.Id;
+            _comments.Add(@event.CommentId, new Tuple<string, string>(@event.Comment!, @event.Username!));
         }
 
         public void EditComment(Guid commentId, string comment, string username)
@@ -117,7 +115,7 @@ namespace Post.Cmd.Domain.Aggregates
 
             RaiseEvent(new CommentUpdatedEvent
             {
-                Id = _id,
+                Id = Guid,
                 CommentId = commentId,
                 Comment = comment,
                 Username = username,
@@ -127,8 +125,8 @@ namespace Post.Cmd.Domain.Aggregates
 
         public void Apply(CommentUpdatedEvent @event)
         {
-            _id = @event.Id;
-            _comments[@event.CommentId] = new Tuple<string, string>(@event.Comment, @event.Username);
+            Guid = @event.Id;
+            _comments[@event.CommentId] = new Tuple<string, string>(@event.Comment!, @event.Username!);
         }
 
         public void RemoveComment(Guid commentId, string username)
@@ -145,14 +143,14 @@ namespace Post.Cmd.Domain.Aggregates
 
             RaiseEvent(new CommentRemovedEvent
             {
-                Id = _id,
+                Id = Guid,
                 CommentId = commentId
             });
         }
 
         public void Apply(CommentRemovedEvent @event)
         {
-            _id = @event.Id;
+            Guid = @event.Id;
             _comments.Remove(@event.CommentId);
         }
 
@@ -163,17 +161,17 @@ namespace Post.Cmd.Domain.Aggregates
                 throw new InvalidOperationException("The post has already been removed!");
             }
 
-            if (!_author.Equals(username, StringComparison.CurrentCultureIgnoreCase))
+            if (!_author!.Equals(username, StringComparison.CurrentCultureIgnoreCase))
             {
                 throw new InvalidOperationException("You are not allowed to delete a post that was made by somebody else!");
             }
 
-            RaiseEvent(new PostRemovedEvent { Id = _id });
+            RaiseEvent(new PostRemovedEvent { Id = Guid });
         }
 
         public void Apply(PostRemovedEvent @event)
         {
-            _id = @event.Id;
+            Guid = @event.Id;
             _active = false;
         }
     }

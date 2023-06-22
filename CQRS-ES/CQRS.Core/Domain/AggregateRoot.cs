@@ -4,13 +4,10 @@ namespace CQRS.Core.Domain
 {
     public abstract class AggregateRoot
     {
-        protected Guid _id;
+        protected Guid Guid;
         private readonly List<BaseEvent> _changes = new();
 
-        public Guid Id
-        {
-            get { return _id; }
-        }
+        public Guid Id => Guid;
 
         public int Version { get; set; } = -1;
 
@@ -26,7 +23,7 @@ namespace CQRS.Core.Domain
 
         private void ApplyChange(BaseEvent @event, bool isNew)
         {
-            var method = this.GetType().GetMethod("Apply", new Type[] { @event.GetType() });
+            var method = GetType().GetMethod("Apply", new[] { @event.GetType() });
 
             if (method == null)
             {
@@ -46,11 +43,11 @@ namespace CQRS.Core.Domain
             ApplyChange(@event, true);
         }
 
-        public void ReplayEvents(IEnumerable<BaseEvent> events)
+        public void ReplayEvents(List<BaseEvent?> events)
         {
             foreach (var @event in events)
             {
-                ApplyChange(@event, false);
+                if (@event != null) ApplyChange(@event, false);
             }
         }
     }

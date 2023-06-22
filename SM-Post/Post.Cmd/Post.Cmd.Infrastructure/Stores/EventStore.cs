@@ -18,7 +18,7 @@ namespace Post.Cmd.Infrastructure.Stores
             _eventProducer = eventProducer;
         }
 
-        public async Task<List<BaseEvent>> GetEventsAsync(Guid aggregateId)
+        public async Task<List<BaseEvent?>> GetEventsAsync(Guid aggregateId)
         {
             var eventStream = await _eventStoreRepository.FindByAggregateId(aggregateId);
 

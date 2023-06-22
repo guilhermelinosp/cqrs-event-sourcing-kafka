@@ -1,4 +1,3 @@
-
 using Confluent.Kafka;
 using CQRS.Core.Consumers;
 using Microsoft.EntityFrameworkCore;
@@ -13,11 +12,16 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 Action<DbContextOptionsBuilder> configureDbContext = o => o.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"));
 builder.Services.AddDbContext<DatabaseContext>(configureDbContext);
-builder.Services.AddSingleton<DatabaseContextFactory>(new DatabaseContextFactory(configureDbContext));
+builder.Services.AddSingleton(new DatabaseContextFactory(configureDbContext));
 
-// create database and tables
-var dataContext = builder.Services.BuildServiceProvider().GetRequiredService<DatabaseContext>();
-dataContext.Database.EnsureCreated();
+// create database and tables (for development purposes)
+var serviceProvider = builder.Services.BuildServiceProvider();
+
+using (var scope = serviceProvider.CreateScope())
+{
+    var databaseContext = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+    databaseContext.Database.EnsureCreated();
+}
 
 builder.Services.AddScoped<IPostRepository, PostRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
@@ -28,9 +32,9 @@ builder.Services.AddScoped<IEventConsumer, EventConsumer>();
 builder.Services.AddControllers();
 builder.Services.AddHostedService<ConsumerHostedService>();
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddApplicationInsightsTelemetry();
 
 var app = builder.Build();
 
@@ -42,7 +46,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
 
 app.MapControllers();

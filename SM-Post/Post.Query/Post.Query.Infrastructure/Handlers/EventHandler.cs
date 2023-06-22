@@ -32,20 +32,22 @@ namespace Post.Query.Infrastructure.Handlers
         {
             var post = await _postRepository.GetByIdAsync(@event.Id);
 
-            if (post == null) return;
-
-            post.Message = @event.Message;
-            await _postRepository.UpdateAsync(post);
+            if (post != null)
+            {
+                post.Message = @event.Message;
+                await _postRepository.UpdateAsync(post);
+            }
         }
 
         public async Task On(PostLikedEvent @event)
         {
             var post = await _postRepository.GetByIdAsync(@event.Id);
 
-            if (post == null) return;
-
-            post.Likes++;
-            await _postRepository.UpdateAsync(post);
+            if (post != null)
+            {
+                post.Likes++;
+                await _postRepository.UpdateAsync(post);
+            }
         }
 
         public async Task On(CommentAddedEvent @event)
@@ -67,13 +69,14 @@ namespace Post.Query.Infrastructure.Handlers
         {
             var comment = await _commentRepository.GetByIdAsync(@event.CommentId);
 
-            if (comment == null) return;
+            if (comment != null)
+            {
+                comment.Comment = @event.Comment;
+                comment.Edited = true;
+                comment.CommentDate = @event.EditDate;
 
-            comment.Comment = @event.Comment;
-            comment.Edited = true;
-            comment.CommentDate = @event.EditDate;
-
-            await _commentRepository.UpdateAsync(comment);
+                await _commentRepository.UpdateAsync(comment);
+            }
         }
 
         public async Task On(CommentRemovedEvent @event)

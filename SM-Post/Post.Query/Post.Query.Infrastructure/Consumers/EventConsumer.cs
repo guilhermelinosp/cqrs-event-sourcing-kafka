@@ -38,7 +38,13 @@ namespace Post.Query.Infrastructure.Consumers
 
                 var options = new JsonSerializerOptions { Converters = { new EventJsonConverter() } };
                 var @event = JsonSerializer.Deserialize<BaseEvent>(consumeResult.Message.Value, options);
-                var handlerMethod = _eventHandler.GetType().GetMethod("On", new Type[] { @event.GetType() });
+
+                if (@event == null)
+                {
+                    throw new ArgumentNullException(nameof(@event), "Could not deserialize event!");
+                }
+
+                var handlerMethod = _eventHandler.GetType().GetMethod("On", new[] { @event.GetType() });
 
                 if (handlerMethod == null)
                 {
