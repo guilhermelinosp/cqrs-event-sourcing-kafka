@@ -1,4 +1,4 @@
-# CQRS and Event Sourcing with Kafka
+# CQRS and Event Sourcing
 
 This repository contains the course materials for learning how to create .NET microservices that adhere to the CQRS (Command Query Responsibility Segregation) and Event Sourcing patterns. Unlike other courses, you won't be using any pre-existing CQRS framework. Instead, you will write every line of code necessary to build your own CQRS and Event Sourcing framework using C# and Apache Kafka. Don't worry, you'll be guided step by step, gaining the knowledge and confidence to become an expert in CQRS and Event Sourcing.
 
