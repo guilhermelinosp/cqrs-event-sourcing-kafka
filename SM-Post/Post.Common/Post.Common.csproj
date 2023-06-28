@@ -11,4 +11,12 @@
 
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <EditorConfigFiles Remove="C:\Repos\cqrs-event-sourcing-with-kafka\SM-Post\Post.Common\.editorconfig" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="C:\Repos\cqrs-event-sourcing-with-kafka\SM-Post\Post.Common\.editorconfig" />
+	</ItemGroup>
+
 </Project>

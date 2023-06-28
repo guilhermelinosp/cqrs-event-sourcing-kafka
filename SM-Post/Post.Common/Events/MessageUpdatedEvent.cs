@@ -8,6 +8,6 @@ namespace Post.Common.Events
         {
         }
 
-        public string? Message { get; set; }
+        public string Message { get; set; }
     }
 }

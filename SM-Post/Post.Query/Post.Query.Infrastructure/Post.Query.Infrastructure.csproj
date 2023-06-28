@@ -16,4 +16,10 @@
 		<ProjectReference Include="..\..\Post.Common\Post.Common.csproj" />
 		<ProjectReference Include="..\..\..\CQRS-ES\CQRS.Core\CQRS.Core.csproj" />
 	</ItemGroup>
+	<ItemGroup>
+	  <EditorConfigFiles Remove="C:\Repos\cqrs-event-sourcing-with-kafka\SM-Post\Post.Query\Post.Query.Infrastructure\.editorconfig" />
+	</ItemGroup>
+	<ItemGroup>
+	  <None Include="C:\Repos\cqrs-event-sourcing-with-kafka\SM-Post\Post.Query\Post.Query.Infrastructure\.editorconfig" />
+	</ItemGroup>
 </Project>

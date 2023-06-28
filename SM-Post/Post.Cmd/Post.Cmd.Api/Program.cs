@@ -1,3 +1,4 @@
+
 using Confluent.Kafka;
 using CQRS.Core.Domain;
 using CQRS.Core.Events;
@@ -21,10 +22,10 @@ BsonClassMap.RegisterClassMap<BaseEvent>();
 BsonClassMap.RegisterClassMap<PostCreatedEvent>();
 BsonClassMap.RegisterClassMap<MessageUpdatedEvent>();
 BsonClassMap.RegisterClassMap<PostLikedEvent>();
-BsonClassMap.RegisterClassMap<PostRemovedEvent>();
 BsonClassMap.RegisterClassMap<CommentAddedEvent>();
 BsonClassMap.RegisterClassMap<CommentUpdatedEvent>();
 BsonClassMap.RegisterClassMap<CommentRemovedEvent>();
+BsonClassMap.RegisterClassMap<PostRemovedEvent>();
 
 // Add services to the container.
 builder.Services.Configure<MongoDbConfig>(builder.Configuration.GetSection(nameof(MongoDbConfig)));
@@ -36,19 +37,17 @@ builder.Services.AddScoped<IEventSourcingHandler<PostAggregate>, EventSourcingHa
 builder.Services.AddScoped<ICommandHandler, CommandHandler>();
 
 // register command handler methods
-
-var serviceProvider = builder.Services.BuildServiceProvider();
-var commandHandler = serviceProvider.GetRequiredService<ICommandHandler>();
-var commandDispatcher = new CommandDispatcher();
-commandDispatcher.RegisterHandler<NewPostCommand>(commandHandler.HandleAsync);
-commandDispatcher.RegisterHandler<EditMessageCommand>(commandHandler.HandleAsync);
-commandDispatcher.RegisterHandler<LikePostCommand>(commandHandler.HandleAsync);
-commandDispatcher.RegisterHandler<AddCommentCommand>(commandHandler.HandleAsync);
-commandDispatcher.RegisterHandler<EditCommentCommand>(commandHandler.HandleAsync);
-commandDispatcher.RegisterHandler<RemoveCommentCommand>(commandHandler.HandleAsync);
-commandDispatcher.RegisterHandler<DeletePostCommand>(commandHandler.HandleAsync);
-
-builder.Services.AddSingleton<ICommandDispatcher>(commandDispatcher);
+var commandHandler = builder.Services.BuildServiceProvider().GetRequiredService<ICommandHandler>();
+var dispatcher = new CommandDispatcher();
+dispatcher.RegisterHandler<NewPostCommand>(commandHandler.HandleAsync);
+dispatcher.RegisterHandler<EditMessageCommand>(commandHandler.HandleAsync);
+dispatcher.RegisterHandler<LikePostCommand>(commandHandler.HandleAsync);
+dispatcher.RegisterHandler<AddCommentCommand>(commandHandler.HandleAsync);
+dispatcher.RegisterHandler<EditCommentCommand>(commandHandler.HandleAsync);
+dispatcher.RegisterHandler<RemoveCommentCommand>(commandHandler.HandleAsync);
+dispatcher.RegisterHandler<DeletePostCommand>(commandHandler.HandleAsync);
+dispatcher.RegisterHandler<RestoreReadDbCommand>(commandHandler.HandleAsync);
+builder.Services.AddSingleton<ICommandDispatcher>(_ => dispatcher);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

@@ -7,4 +7,12 @@
 
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <EditorConfigFiles Remove="C:\Repos\cqrs-event-sourcing-with-kafka\SM-Post\Post.Query\Post.Query.Domain\.editorconfig" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="C:\Repos\cqrs-event-sourcing-with-kafka\SM-Post\Post.Query\Post.Query.Domain\.editorconfig" />
+	</ItemGroup>
+
 </Project>

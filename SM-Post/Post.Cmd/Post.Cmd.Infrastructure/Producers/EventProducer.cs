@@ -15,18 +15,20 @@ namespace Post.Cmd.Infrastructure.Producers
             _config = config.Value;
         }
 
-        public async Task ProduceAsync<T>(string? topic, T @event) where T : BaseEvent
+        public async Task ProduceAsync<T>(string topic, T @event) where T : BaseEvent
         {
             using var producer = new ProducerBuilder<string, string>(_config)
                 .SetKeySerializer(Serializers.Utf8)
                 .SetValueSerializer(Serializers.Utf8)
                 .Build();
 
-            var deliveryResult = await producer.ProduceAsync(topic, new Message<string, string>
+            var eventMessage = new Message<string, string>
             {
                 Key = Guid.NewGuid().ToString(),
                 Value = JsonSerializer.Serialize(@event, @event.GetType())
-            });
+            };
+
+            var deliveryResult = await producer.ProduceAsync(topic, eventMessage);
 
             if (deliveryResult.Status == PersistenceStatus.NotPersisted)
             {

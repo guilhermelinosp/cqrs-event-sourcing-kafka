@@ -5,7 +5,7 @@ namespace Post.Cmd.Infrastructure.Dispatchers
 {
     public class CommandDispatcher : ICommandDispatcher
     {
-        private readonly Dictionary<Type, Func<BaseCommand, Task>?> _handlers = new();
+        private readonly Dictionary<Type, Func<BaseCommand, Task>> _handlers = new();
 
         public void RegisterHandler<T>(Func<T, Task> handler) where T : BaseCommand
         {
@@ -21,7 +21,7 @@ namespace Post.Cmd.Infrastructure.Dispatchers
         {
             if (_handlers.TryGetValue(command.GetType(), out var handler))
             {
-                await handler?.Invoke(command)!;
+                await handler(command);
             }
             else
             {

@@ -9,7 +9,7 @@ namespace Post.Query.Infrastructure.DataAccess
         {
         }
 
-        public DbSet<PostEntity>? Posts { get; set; }
-        public DbSet<CommentEntity>? Comments { get; set; }
+        public DbSet<PostEntity> Posts { get; set; }
+        public DbSet<CommentEntity> Comments { get; set; }
     }
 }

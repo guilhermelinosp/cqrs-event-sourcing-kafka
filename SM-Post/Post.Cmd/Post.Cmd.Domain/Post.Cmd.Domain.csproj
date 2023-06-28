@@ -1,15 +1,21 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
 
-	</PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\CQRS-ES\CQRS.Core\CQRS.Core.csproj" />
+    <ProjectReference Include="..\..\Post.Common\Post.Common.csproj" />
+  </ItemGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\..\..\CQRS-ES\CQRS.Core\CQRS.Core.csproj" />
-		<ProjectReference Include="..\..\Post.Common\Post.Common.csproj" />
-	</ItemGroup>
+  <ItemGroup>
+    <EditorConfigFiles Remove="C:\Repos\cqrs-event-sourcing-with-kafka\SM-Post\Post.Cmd\Post.Cmd.Domain\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="C:\Repos\cqrs-event-sourcing-with-kafka\SM-Post\Post.Cmd\Post.Cmd.Domain\.editorconfig" />
+  </ItemGroup>
 
 </Project>

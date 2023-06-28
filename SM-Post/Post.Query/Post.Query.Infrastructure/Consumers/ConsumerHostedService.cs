@@ -20,15 +20,11 @@ namespace Post.Query.Infrastructure.Consumers
         {
             _logger.LogInformation("Event Consumer Service running.");
 
-            using (var scope = _serviceProvider.CreateScope())
+            using (IServiceScope scope = _serviceProvider.CreateScope())
             {
                 var eventConsumer = scope.ServiceProvider.GetRequiredService<IEventConsumer>();
-                var topic = Environment.GetEnvironmentVariable("KAFKA_TOPIC");
 
-                Task.Run(() =>
-                {
-                    if (topic != null) eventConsumer.Consume(topic);
-                }, cancellationToken);
+                Task.Run(() => eventConsumer.Consume("SocialMediaPostEvents"), cancellationToken);
             }
 
             return Task.CompletedTask;

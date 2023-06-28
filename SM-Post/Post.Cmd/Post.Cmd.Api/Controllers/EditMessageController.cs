@@ -1,4 +1,4 @@
-﻿using CQRS.Core.Exceptions;
+using CQRS.Core.Exceptions;
 using CQRS.Core.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Post.Cmd.Api.Commands;
@@ -10,10 +10,10 @@ namespace Post.Cmd.Api.Controllers
     [Route("api/v1/[controller]")]
     public class EditMessageController : ControllerBase
     {
-        private readonly ILogger<NewPostController> _logger;
+        private readonly ILogger<EditMessageController> _logger;
         private readonly ICommandDispatcher _commandDispatcher;
 
-        public EditMessageController(ILogger<NewPostController> logger, ICommandDispatcher commandDispatcher)
+        public EditMessageController(ILogger<EditMessageController> logger, ICommandDispatcher commandDispatcher)
         {
             _logger = logger;
             _commandDispatcher = commandDispatcher;
@@ -27,7 +27,7 @@ namespace Post.Cmd.Api.Controllers
                 command.Id = id;
                 await _commandDispatcher.SendAsync(command);
 
-                return Ok(new BaseResponse()
+                return Ok(new BaseResponse
                 {
                     Message = "Edit message request completed successfully!"
                 });
@@ -50,12 +50,12 @@ namespace Post.Cmd.Api.Controllers
             }
             catch (Exception ex)
             {
-                const string safeErrorMessage = "Error while processing request to edit the message of a post!";
-                _logger.Log(LogLevel.Error, ex, safeErrorMessage);
+                const string SAFE_ERROR_MESSAGE = "Error while processing request to edit the message of a post!";
+                _logger.Log(LogLevel.Error, ex, SAFE_ERROR_MESSAGE);
 
-                return StatusCode(StatusCodes.Status500InternalServerError, new BaseResponse()
+                return StatusCode(StatusCodes.Status500InternalServerError, new BaseResponse
                 {
-                    Message = safeErrorMessage
+                    Message = SAFE_ERROR_MESSAGE
                 });
             }
         }

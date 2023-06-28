@@ -7,7 +7,10 @@ namespace CQRS.Core.Domain
         protected Guid Guid;
         private readonly List<BaseEvent> _changes = new();
 
-        public Guid Id => Guid;
+        public Guid Id
+        {
+            get { return Guid; }
+        }
 
         public int Version { get; set; } = -1;
 
@@ -23,7 +26,7 @@ namespace CQRS.Core.Domain
 
         private void ApplyChange(BaseEvent @event, bool isNew)
         {
-            var method = GetType().GetMethod("Apply", new[] { @event.GetType() });
+            var method = this.GetType().GetMethod("Apply", new[] { @event.GetType() });
 
             if (method == null)
             {
@@ -43,11 +46,11 @@ namespace CQRS.Core.Domain
             ApplyChange(@event, true);
         }
 
-        public void ReplayEvents(List<BaseEvent?> events)
+        public void ReplayEvents(IEnumerable<BaseEvent> events)
         {
             foreach (var @event in events)
             {
-                if (@event != null) ApplyChange(@event, false);
+                ApplyChange(@event, false);
             }
         }
     }

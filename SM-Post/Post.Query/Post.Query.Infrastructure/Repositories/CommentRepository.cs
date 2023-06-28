@@ -14,17 +14,17 @@ namespace Post.Query.Infrastructure.Repositories
             _contextFactory = contextFactory;
         }
 
-        public async Task<CommentEntity?> GetByIdAsync(Guid commentId)
+        public async Task<CommentEntity> GetByIdAsync(Guid commentId)
         {
             await using var context = _contextFactory.CreateDbContext();
 
-            return await context.Comments!.FirstOrDefaultAsync(x => x.CommentId == commentId);
+            return (await context.Comments.FirstOrDefaultAsync(x => x.CommentId == commentId))!;
         }
 
-        public async Task UpdateAsync(CommentEntity? comment)
+        public async Task UpdateAsync(CommentEntity comment)
         {
             await using var context = _contextFactory.CreateDbContext();
-            if (comment != null) context.Comments!.Update(comment);
+            context.Comments.Update(comment);
 
             await context.SaveChangesAsync();
         }
@@ -34,16 +34,14 @@ namespace Post.Query.Infrastructure.Repositories
             await using var context = _contextFactory.CreateDbContext();
             var comment = await GetByIdAsync(commentId);
 
-            if (comment == null) return;
-
-            context.Comments!.Remove(comment);
+            context.Comments.Remove(comment);
             await context.SaveChangesAsync();
         }
 
-        public async Task CreateAsync(CommentEntity? comment)
+        public async Task CreateAsync(CommentEntity comment)
         {
             await using var context = _contextFactory.CreateDbContext();
-            if (comment != null) context.Comments!.Add(comment);
+            context.Comments.Add(comment);
 
             await context.SaveChangesAsync();
         }

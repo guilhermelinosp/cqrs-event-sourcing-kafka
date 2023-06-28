@@ -6,8 +6,10 @@ namespace Post.Cmd.Domain.Aggregates
     public class PostAggregate : AggregateRoot
     {
         private bool _active;
-        private string? _author;
+        private string _author;
         private readonly Dictionary<Guid, Tuple<string, string>> _comments = new();
+
+        public bool Active { get => _active; set => _active = value; }
 
         public PostAggregate()
         {
@@ -98,7 +100,7 @@ namespace Post.Cmd.Domain.Aggregates
         public void Apply(CommentAddedEvent @event)
         {
             Guid = @event.Id;
-            _comments.Add(@event.CommentId, new Tuple<string, string>(@event.Comment!, @event.Username!));
+            _comments.Add(@event.CommentId, new Tuple<string, string>(@event.Comment, @event.Username));
         }
 
         public void EditComment(Guid commentId, string comment, string username)
@@ -126,7 +128,7 @@ namespace Post.Cmd.Domain.Aggregates
         public void Apply(CommentUpdatedEvent @event)
         {
             Guid = @event.Id;
-            _comments[@event.CommentId] = new Tuple<string, string>(@event.Comment!, @event.Username!);
+            _comments[@event.CommentId] = new Tuple<string, string>(@event.Comment, @event.Username);
         }
 
         public void RemoveComment(Guid commentId, string username)
@@ -161,7 +163,7 @@ namespace Post.Cmd.Domain.Aggregates
                 throw new InvalidOperationException("The post has already been removed!");
             }
 
-            if (!_author!.Equals(username, StringComparison.CurrentCultureIgnoreCase))
+            if (!_author.Equals(username, StringComparison.CurrentCultureIgnoreCase))
             {
                 throw new InvalidOperationException("You are not allowed to delete a post that was made by somebody else!");
             }

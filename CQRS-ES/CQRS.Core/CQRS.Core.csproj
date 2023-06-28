@@ -8,7 +8,15 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="MongoDB.Driver" Version="2.19.2" />
+		<PackageReference Include="MongoDB.Driver" Version="2.20.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EditorConfigFiles Remove="C:\Repos\cqrs-event-sourcing-with-kafka\CQRS-ES\CQRS.Core\.editorconfig" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="C:\Repos\cqrs-event-sourcing-with-kafka\CQRS-ES\CQRS.Core\.editorconfig" />
 	</ItemGroup>
 
 </Project>
