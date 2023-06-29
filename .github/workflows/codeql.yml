@@ -27,10 +27,10 @@ jobs:
         languages: csharp
 
     - name: Restore NuGet Packages
-      run: nuget restore
+      run: cd SM-Post && nuget restore
 
     - name: Build
-      run: dotnet build --configuration Release
+      run: cd SM-Post && dotnet build  --no-restore --configuration Release
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
